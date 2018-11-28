@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schemalist>
+    <schema path="/org/gnome/shell/extensions/netatmo-station/credential/" id="org.gnome.shell.extensions.netatmo-station.credential">
+        <key name="netatmo-username" type="s">
+            <default>"aurelien.bras@gmail.com"</default>
+            <summary>Netatmo username</summary>
+        </key>
+        <key name="netatmo-password" type="s">
+            <default>"undefined"</default>
+            <summary>Netatmo password</summary>
+        </key>
+    </schema>
+    <schema path="/org/gnome/shell/extensions/netatmo-station/station/" id="org.gnome.shell.extensions.netatmo-station.station">
+        <key name="netatmo-device-id" type="s">
+            <default>"70:ee:50:04:e6:00"</default>
+            <summary>Netatmo device ID</summary>
+        </key>
+    </schema>
+
+</schemalist>

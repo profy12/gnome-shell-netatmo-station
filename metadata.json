@@ -1,0 +1,7 @@
+{
+    "name": "netatmo station",
+    "description": "Extension to display data from your NetAtmo station",
+    "uuid": "netatmo-station@aurelien.bras.gmail.com",
+    "shell-version": ["3.28.3"],
+    "version": 1
+}
