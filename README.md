@@ -1,6 +1,10 @@
 # gnome-shell-netatmo-station
 Gnome shell extension to pull and display data from station
 
+## Prerequies
+
+Should work with Gnome-shell 3.26 and later, tested with 3.28.
+
 ## Installation
 
 First install the extension :
