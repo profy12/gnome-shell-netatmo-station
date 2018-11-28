@@ -92,6 +92,12 @@ class NetatmoConnect {
         request.set_request('application/x-www-form-urlencoded',2,encodedParams);
         session.queue_message(request,() => {this._parseData(request);});
     }
+    destroy(){
+        if (this._timeout) {
+            Mainloop.source_remove(this._timeout);
+            this._timeout = null;
+        }
+    }
     _parseData(request){
         log("Debut du callback connect");
         if (request.status_code !== 200){
@@ -135,11 +141,13 @@ class NetatmoStationData {
         */
         this.refresh();
     }
-    refresh(){
-        if (!this._naConnect.token){
-            log('No token!');
-            return;
+    destroy(){
+        if (this._timeout) {
+            Mainloop.source_remove(this._timeout);
+            this._timeout = null;
         }
+    }
+    refresh(){
         this._menuButton._updateButtonText();
         let refreshTime = 300; // in seconds
         if (this._timeout) {
@@ -147,6 +155,10 @@ class NetatmoStationData {
             this._timeout = null;
         }
         this._timeout = Mainloop.timeout_add_seconds(refreshTime, this.refresh.bind(this));
+        if (!this._naConnect.token){
+            log('No token!');
+            return;
+        }
         let params = {
             access_token: this._naConnect.token,
             device_id: this._device_id
@@ -232,6 +244,10 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         log('updating text button'+this);
         this._buttonText.set_text('_°C');
     }
+    stop() {
+        this.naConnect.destroy();
+        this.naData.destroy();
+    }
 
 };
 
@@ -259,5 +275,7 @@ function enable() {
 function disable() {
     log('disable');
     netatmoStationMenu.stop();
+    netatmoStationMenu.destroy();
+    netatmoStationMenu=null;
 }
 
