@@ -13,7 +13,7 @@ First install the extension :
 
 ```
 cd .local/share/gnome-shell/extensions/
-git clone git@github.com:profy12/gnome-shell-netatmo-station.git
+git clone https://github.com/profy12/gnome-shell-netatmo-station.git
 mv gnome-shell-netatmo-station netatmo-station@aurelien.bras.gmail.com
 ```
 
