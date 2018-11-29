@@ -1,4 +1,3 @@
-//import {NetatmoCredentialSettings} from './convenience';
 const Clutter       = imports.gi.Clutter;
 const Gio           = imports.gi.Gio;
 const Mainloop      = imports.mainloop;
@@ -13,9 +12,6 @@ const Main          = imports.ui.main;
 const PanelMenu     = imports.ui.panelMenu;
 const PopupMenu     = imports.ui.popupMenu;
 const CheckBox      = imports.ui.checkBox.CheckBox;
-
-
-
 const Tweener = imports.ui.tweener;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
@@ -23,11 +19,7 @@ const Convenience = Me.imports.convenience;
 
 class NetatmoConnect {
     constructor (display) {
-        log('creating Netatmo');
-        //this._settings = Convenience.getSettings(Me.path, Me.metadata.id);
-        //log("settings : " + this._settings.get_string('netatmo-username'));
         this._settings = new Convenience.NetatmoCredentialSettings(Me.path);
-        log(`Settings, username: ${this._settings.username}`);
         this._display = display;
         this._authUrl = 'https://api.netatmo.com/oauth2/token';
         this._params = {
@@ -64,7 +56,6 @@ class NetatmoConnect {
         let encodedParams = Soup.form_encode_hash(this._params);
         request.set_request('application/x-www-form-urlencoded',2,encodedParams);
         session.queue_message(request,() => {this._parseData(request);});
-        log(request.response_body.data);
     }
     _refresh(){
         let refreshTime = 3600; // in seconds
@@ -77,7 +68,6 @@ class NetatmoConnect {
             log("No token, will refresh later");
             return;
         }
-        log('refreshing token');
         let authUrl = 'https://api.netatmo.com/oauth2/token';
         let params = {
             grant_type: "refresh_token",
@@ -87,7 +77,7 @@ class NetatmoConnect {
         };
         let session = Soup.Session.new();
         let request = Soup.Message.new('POST',authUrl);
-        log(JSON.stringify(params));
+        //log(JSON.stringify(params));
         let encodedParams = Soup.form_encode_hash(params);
         request.set_request('application/x-www-form-urlencoded',2,encodedParams);
         session.queue_message(request,() => {this._parseData(request);});
@@ -99,7 +89,6 @@ class NetatmoConnect {
         }
     }
     _parseData(request){
-        log("Debut du callback connect");
         if (request.status_code !== 200){
             log("Bad return " + request.status_code);
         }
@@ -109,14 +98,11 @@ class NetatmoConnect {
         this._refresh_token = connect_data.refresh_token;
         this._expires_in = connect_data.expires_in;
         this._display.getNetatmoData();
-        log("Fin du callback connect");
     }
     get token() {
-        log('getting Token');
         return this._access_token;
     }
     set token(tok) {
-        log('setting token from external');
         this._access_token = tok;
     }
 
@@ -131,14 +117,6 @@ class NetatmoStationData {
         this._url = `https://api.netatmo.com/api/getstationsdata`;
         log("Token naconnect: " + naConnect.token);
         this.na = null;
-        /*
-        let session = Soup.Session.new();
-        let request = Soup.Message.new('POST',url);
-        log(JSON.stringify(params));
-        let encodedParams = Soup.form_encode_hash(params);
-        request.set_request('application/x-www-form-urlencoded',2,encodedParams);
-        session.queue_message(request,() => {this._parseData(request);});
-        */
         this.refresh();
     }
     destroy(){
@@ -170,7 +148,6 @@ class NetatmoStationData {
         session.queue_message(request,() => {this._parseData(request);});
     }
     _parseData(request){
-        log("Debut du Callback data");
         if (request.status_code !== 200){
             if (request.status_code === 403){
                 // Token has expired, possible after some network failure or on suspended computer
@@ -180,14 +157,9 @@ class NetatmoStationData {
             log(JSON.parse(request.response_body.data).error.message);
             return;
         }
-        log('return code: ' + request.status_code);
         this.na = JSON.parse(request.response_body.data);
-        log(request.response_body.data);
-        log(this.na);
-        //this.tempExt = this.na.body.devices[0].modules[0].dashboard_data.Temperature;
-        log(this.tempExt + '°C');
+        //log(request.response_body.data);
         this._menuButton.refresh();
-        log("Fin du callback data");
     }
     get tempExt () {
         return this.na.body.devices[0].modules[0].dashboard_data.Temperature;
@@ -198,7 +170,6 @@ class NetatmoStationData {
 class NetatmoStationMenuButton extends PanelMenu.Button {
     constructor() {
         super(0.0, "Netatmo indicator");
-        log("Menu button init");
         this._button = new St.Bin({ style_class:'panel-button',
                                     reactive: true,
                                     can_focus: true,
@@ -207,25 +178,16 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
                                     track_hover: true });
         this._buttonText = new St.Label({ text: '_°C',
                                             style_class: 'temp-text'});
-        log('Will set button child');        
         this._button.set_child(this._buttonText);
-        log('Connecting button');
-        //this._button.connect('button-press-event', () => { this._updateButtonText()});
-        //this._button.connect('button-press-event', this._updateButtonText.bind(this));
         this._button.connect('button-press-event', this.getNetatmoData.bind(this));
-        log('Display button');
         this.actor.add_child(this._button);
-        log('Menu button should be visible now');
         this.naConnect = new NetatmoConnect(this);
         this.naData = null;
-        //this._getNetatmoData();
-        //this.naData = new NetatmoStationData(this.naConnect);
-        log('Final: ' + this.naConnect.token);
+        //log('Final: ' + this.naConnect.token);
     }
     getNetatmoData() {
         this._buttonText.set_text('_°C');
         log('Refreshing Netatmo data');
-        //log(this.naConnect);
         if (!this.naConnect){
             log("token not ready");
             return;
@@ -237,11 +199,9 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         }
     }
     refresh() {
-        log('updating text button'+this);
         this._buttonText.set_text(this.naData.tempExt + '°C');
     }
     _updateButtonText() {
-        log('updating text button'+this);
         this._buttonText.set_text('_°C');
     }
     stop() {
@@ -259,21 +219,17 @@ function init() {
 }
 
 function enable() {
-    //Main.panel._rightBox.insert_child_at_index(button, 0);
     log('Enable the Netatmo extension');
     if (!netatmoStationMenu){
         netatmoStationMenu = new NetatmoStationMenuButton();
-        log('will insert in the panel');
-        //Main.panel._rightBox.insert_child_at_index(netatmoStationMenu, 1);
         Main.panel.addToStatusArea('netatmoStationMenu', netatmoStationMenu,1,'right');
-        log('inserted in the panel');
     } else {
         log('Already inserted');
     }
 }
 
 function disable() {
-    log('disable');
+    log('Disable netatmo extension');
     netatmoStationMenu.stop();
     netatmoStationMenu.destroy();
     netatmoStationMenu=null;

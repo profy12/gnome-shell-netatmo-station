@@ -33,20 +33,3 @@ class NetatmoStationSettings {
   get deviceId() { return this._settings.get_string('netatmo-device-id')};
   set deviceId(deviceId) { this._settings.set_string('netatmo-device-id',deviceId)};
 }
-/*
-function getSettings (extensionPath, extensionId) {
-    let defaultSource = Gio.SettingsSchemaSource.get_default();
-    let source = Gio.SettingsSchemaSource.new_from_directory(extensionPath, defaultSource, false); // trusted = false
-  
-    let schemaId = 'org.gnome.shell.extensions.netatmo-station';
-    let schema = source.lookup(schemaId, false); // recursive = false
-  
-    if (!schema) {
-      throw new Error('Schema ' + schemaId + ' could not be found in the path ' + extensionPath);
-    }
-  
-    return new Gio.Settings({
-      settings_schema: schema
-    })
-  }
-  */
