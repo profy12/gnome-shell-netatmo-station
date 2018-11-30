@@ -15,6 +15,18 @@
             <default>"70:ee:50:04:e6:00"</default>
             <summary>Netatmo device ID</summary>
         </key>
+        <key name="netatmo-display-temp-ext" type="b">
+            <default>true</default>
+            <summary>If we display external temperature in the menubar</summary>
+        </key>
+        <key name="netatmo-display-temp-int" type="b">
+            <default>false</default>
+            <summary>If we display internal temperature in the menubar</summary>
+        </key>
+        <key name="netatmo-display-co2" type="b">
+            <default>false</default>
+            <summary>If we display CO2 ppm in the menubar</summary>
+        </key>
     </schema>
 
 </schemalist>

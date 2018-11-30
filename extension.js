@@ -164,29 +164,61 @@ class NetatmoStationData {
     get tempExt () {
         return this.na.body.devices[0].modules[0].dashboard_data.Temperature;
     }
+    get tempInt () {
+        return this.na.body.devices[0].dashboard_data.Temperature;
+    }
+    get CO2 () {
+        return this.na.body.devices[0].dashboard_data.CO2;
+    }
+
 
 }
 
 class NetatmoStationMenuButton extends PanelMenu.Button {
     constructor() {
         super(0.0, "Netatmo indicator");
+        this._settings = new Convenience.NetatmoStationSettings(Me.path);
+        this._box = new St.BoxLayout();
         this._button = new St.Bin({ style_class:'panel-button',
                                     reactive: true,
                                     can_focus: true,
                                     x_fill: true,
                                     y_fill: false,
                                     track_hover: true });
-        this._buttonText = new St.Label({ text: '_°C',
+        this._tempExtText = new St.Label({ text: '_°C ',
                                             style_class: 'temp-text'});
-        this._button.set_child(this._buttonText);
+        this._tempIntText = new St.Label({ text: '_°C ',
+                                            style_class: 'temp-text'});
+
+        this._tempExtText = new St.Label({ text: '_°C ',
+                                            style_class: 'temp-text'});
+        this._tempIntText = new St.Label({ text: '_°C ',
+                                            style_class: 'temp-text'});
+        this._CO2Text = new St.Label({ text: '_ ppm ',
+                                            style_class: 'temp-text'});
+
+
+        this._button.set_child(this._box);
+        log('OOOOOOOOOOOOO' + this._settings.displayTempExt);
+        let i = 0;
+        if (this._settings.displayTempExt) { i++; this._box.add_actor(this._tempExtText)};
+        if (this._settings.displayTempInt) { i++; this._box.add_actor(this._tempIntText)};
+        if (this._settings.displayCO2) { i++; this._box.add_actor(this._CO2Text)};
+        if (i===0){this._box.add_actor(this._tempExtText)};
         this._button.connect('button-press-event', this.getNetatmoData.bind(this));
         this.actor.add_child(this._button);
+        let menuItem = new PopupMenu.PopupMenuItem("hello world");
+        this.menu.addMenuItem(menuItem);
+        menuItem = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(menuItem);
+        menuItem = new PopupMenu.PopupMenuItem("hello world");
+        this.menu.addMenuItem(menuItem);
         this.naConnect = new NetatmoConnect(this);
         this.naData = null;
         //log('Final: ' + this.naConnect.token);
     }
     getNetatmoData() {
-        this._buttonText.set_text('_°C');
+        this._tempExtText.set_text('_°C');
         log('Refreshing Netatmo data');
         if (!this.naConnect){
             log("token not ready");
@@ -199,10 +231,14 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         }
     }
     refresh() {
-        this._buttonText.set_text(this.naData.tempExt + '°C');
+        this._tempExtText.set_text('Ext: ' + this.naData.tempExt + '°C ');
+        this._tempIntText.set_text('Int: ' + this.naData.tempInt + '°C ');
+        this._CO2Text.set_text(this.naData.CO2 + 'ppm ');
     }
     _updateButtonText() {
-        this._buttonText.set_text('_°C');
+        this._tempExtText.set_text('_°C ');
+        this._tempIntText.set_text('_°C ');
+        this._CO2Text.set_text('_°C ');
     }
     stop() {
         this.naConnect.destroy();
