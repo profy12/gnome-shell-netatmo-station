@@ -205,8 +205,8 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         if (this._settings.displayCO2) { i++; this._box.add_actor(this._CO2Text)};
         if (i===0){this._box.add_actor(this._tempExtText)};
         this._button.connect('button-press-event', this.getNetatmoData.bind(this));
-        /*
         this.actor.add_child(this._button);
+        /*
         let menuItem = new PopupMenu.PopupMenuItem("hello world");
         this.menu.addMenuItem(menuItem);
         menuItem = new PopupMenu.PopupSeparatorMenuItem();
