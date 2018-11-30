@@ -199,13 +199,13 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
 
 
         this._button.set_child(this._box);
-        log('OOOOOOOOOOOOO' + this._settings.displayTempExt);
         let i = 0;
         if (this._settings.displayTempExt) { i++; this._box.add_actor(this._tempExtText)};
         if (this._settings.displayTempInt) { i++; this._box.add_actor(this._tempIntText)};
         if (this._settings.displayCO2) { i++; this._box.add_actor(this._CO2Text)};
         if (i===0){this._box.add_actor(this._tempExtText)};
         this._button.connect('button-press-event', this.getNetatmoData.bind(this));
+        /*
         this.actor.add_child(this._button);
         let menuItem = new PopupMenu.PopupMenuItem("hello world");
         this.menu.addMenuItem(menuItem);
@@ -213,6 +213,7 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         this.menu.addMenuItem(menuItem);
         menuItem = new PopupMenu.PopupMenuItem("hello world");
         this.menu.addMenuItem(menuItem);
+        */
         this.naConnect = new NetatmoConnect(this);
         this.naData = null;
         //log('Final: ' + this.naConnect.token);
