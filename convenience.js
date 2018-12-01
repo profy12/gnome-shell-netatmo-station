@@ -30,8 +30,8 @@ class NetatmoStationSettings {
     }
     this._settings = new Gio.Settings({settings_schema: schema});
   }
-  get deviceId() { return this._settings.get_string('netatmo-device-id')};
-  set deviceId(deviceId) { this._settings.set_string('netatmo-device-id',deviceId)};
+  //get deviceId() { return this._settings.get_string('netatmo-device-id')};
+  //set deviceId(deviceId) { this._settings.set_string('netatmo-device-id',deviceId)};
   get displayTempExt() { return this._settings.get_boolean('netatmo-display-temp-ext')};
   set displayTempExt(choice) { this._settings.set_boolean('netatmo-display-temp-ext',choice)};
   get displayTempInt() { return this._settings.get_boolean('netatmo-display-temp-int')};
