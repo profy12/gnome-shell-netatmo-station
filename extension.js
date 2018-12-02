@@ -187,55 +187,63 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         super(0.0, "Netatmo indicator");
         this._settings = new Convenience.NetatmoStationSettings(Me.path);
         this.naData = null;
+
+        /*
+        * Display menu bar items
+        */
+
         this._box = new St.BoxLayout();
-        this._button = new St.Bin({ style_class:'panel-button',
-                                    reactive: true,
-                                    can_focus: true,
-                                    x_fill: true,
-                                    y_fill: false,
-                                    track_hover: true });
-        this._tempExtText = new St.Label({ text: '_°C ',
-                                            style_class: 'temp-text'});
-        this._tempIntText = new St.Label({ text: '_°C ',
-                                            style_class: 'temp-text'});
+        this._tempExtText = new St.Label({ text: '_°C',
+                                            style_class: 'panel-menu-data'});
+        this._tempIntText = new St.Label({ text: '_°C',
+                                            style_class: 'panel-menu-data'});
 
-        this._tempExtText = new St.Label({ text: '_°C ',
-                                            style_class: 'temp-text'});
-        this._tempIntText = new St.Label({ text: '_°C ',
-                                            style_class: 'temp-text'});
-        this._CO2Text = new St.Label({ text: '_ ppm ',
-                                            style_class: 'temp-text'});
-
-
-        this._button.set_child(this._box);
+        this._tempExtText = new St.Label({ text: '_°C',
+                                            style_class: 'panel-menu-data'});
+        this._tempIntText = new St.Label({ text: '_°C',
+                                            style_class: 'panel-menu-data'});
+        this._CO2Text = new St.Label({ text: '_ ppm',
+                                            style_class: 'panel-menu-data'});
         let i = 0;
-        if (this._settings.displayTempExt) { i++; this._box.add_actor(this._tempExtText)};
-        if (this._settings.displayTempInt) { i++; this._box.add_actor(this._tempIntText)};
-        if (this._settings.displayCO2) { i++; this._box.add_actor(this._CO2Text)};
-        if (i===0){this._box.add_actor(this._tempExtText)};
-        //this._button.connect('button-press-event', this.getNetatmoData.bind(this));
-        this.actor.add_child(this._button);
-        
-        let menuItem = new PopupMenu.PopupMenuItem("Indoor module");
-        this.menu.addMenuItem(menuItem);
-        this._timeIntDisplay = new PopupMenu.PopupMenuItem(`Refresh time : `);
+        if (this._settings.displayTempExt) { i++; this._box.add(this._tempExtText)};
+        if (this._settings.displayTempInt) { i++; this._box.add(this._tempIntText)};
+        if (this._settings.displayCO2) { i++; this._box.add(this._CO2Text)};
+        if (i===0){this._box.add(this._tempExtText)};
+        this._box.add(PopupMenu.arrowIcon(St.Side.BOTTOM));
+        this.actor.add_child(this._box);
+
+        /*
+        * Display box element in popup menu
+        */
+        let refreshIcon = new St.Icon({icon_name: 'view-refresh', style_class: 'system-status-icon'});
+        let intTitleBox = new St.BoxLayout();
+        let outTitleBox = new St.BoxLayout();
+        let menuBoxItem = new PopupMenu.PopupBaseMenuItem({reactive: false});
+        let intTitle = new St.Label({ text: 'Indoor', style_class: 'popup-menu-title'});
+        let outTitle = new St.Label({ text: 'Outdoor', style_class: 'popup-menu-title'});
+        this._timeIntDisplay = new St.Label({ text: 'no date for now', style_class: 'time-popup-title'});
+        this._timeExtDisplay = new St.Label({ text: 'no date for now', style_class: 'time-popup-title'});
+        intTitleBox.add(intTitle);
+        intTitleBox.add(this._timeIntDisplay);
+        outTitleBox.add(outTitle);
+        outTitleBox.add(this._timeExtDisplay);
+        //intTitleBox.add(refreshIcon);
+        menuBoxItem.actor.add_actor(intTitleBox);
+        this.menu.addMenuItem(menuBoxItem);
+        //refreshIcon.connect('button-press-event', this.getNetatmoData.bind(this));
         this._tempIntDisplay = new PopupMenu.PopupMenuItem(`Indoor temperature : `);
+        this._tempIntDisplay.style_class = 'popup-netatmo-menu-item';
         this._co2Display = new PopupMenu.PopupMenuItem(`CO2 : `);
-        this.menu.addMenuItem(this._timeIntDisplay);
         this.menu.addMenuItem(this._tempIntDisplay);
         this.menu.addMenuItem(this._co2Display);
-
-        menuItem = new PopupMenu.PopupSeparatorMenuItem();
+        let menuItem = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(menuItem);
-        menuItem = new PopupMenu.PopupMenuItem("Outdoor module");
-        this.menu.addMenuItem(menuItem);
-        this._timeExtDisplay = new PopupMenu.PopupMenuItem(`Refresh time : `);
+        menuBoxItem = new PopupMenu.PopupBaseMenuItem({reactive: false});
+        menuBoxItem.actor.add_actor(outTitleBox);
+        this.menu.addMenuItem(menuBoxItem);
         this._tempExtDisplay = new PopupMenu.PopupMenuItem(`Outdoor temperature : `);
-        this.menu.addMenuItem(this._timeExtDisplay);
         this.menu.addMenuItem(this._tempExtDisplay);
-        
         this.naConnect = new NetatmoConnect(this);
-        
         //log('Final: ' + this.naConnect.token);
     }
     getNetatmoData() {
@@ -252,14 +260,14 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         }
     }
     refresh() {
-        this._tempExtText.set_text('Out: ' + this.naData.tempExt + '°C ');
-        this._tempIntText.set_text('In: ' + this.naData.tempInt + '°C ');
-        this._CO2Text.set_text(this.naData.CO2 + 'ppm ');
-        this._timeIntDisplay.label.set_text(`Refresh time: ${this.naData.timeInt}`);
-        this._tempIntDisplay.label.set_text(`Indoor temperature: ${this.naData.tempInt}°C`);
+        this._tempExtText.set_text('Out: ' + this.naData.tempExt + '°C');
+        this._tempIntText.set_text('In: ' + this.naData.tempInt + '°C');
+        this._CO2Text.set_text(this.naData.CO2 + 'ppm');
+        this._timeIntDisplay.set_text(`Refresh time: ${this.naData.timeInt}`);
+        this._tempIntDisplay.label.set_text(`Temperature: ${this.naData.tempInt}°C`);
         this._co2Display.label.set_text(`CO2: ${this.naData.CO2}ppm`);
-        this._timeExtDisplay.label.set_text(`Refresh time: ${this.naData.timeExt}`);
-        this._tempExtDisplay.label.set_text(`Outdoor temperature: ${this.naData.tempExt}°C`);
+        this._timeExtDisplay.set_text(`Refresh time: ${this.naData.timeExt}`);
+        this._tempExtDisplay.label.set_text(`Temperature: ${this.naData.tempExt}°C`);
     }
     _updateButtonText() {
         this._tempExtText.set_text('_°C ');

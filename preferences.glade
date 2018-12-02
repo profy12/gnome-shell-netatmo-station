@@ -75,7 +75,7 @@
           <object class="GtkLabel" id="display-temp-ext-label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Display external temperature</property>
+            <property name="label" translatable="yes">Display outdoor temperature</property>
             <property name="width_chars">38</property>
           </object>
           <packing>
@@ -87,7 +87,7 @@
           <object class="GtkLabel" id="display-temp-int-label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Display internal temperature</property>
+            <property name="label" translatable="yes">Display indoor temperature</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
