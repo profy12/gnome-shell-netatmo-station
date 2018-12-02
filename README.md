@@ -19,13 +19,12 @@ mv gnome-shell-netatmo-station netatmo-station@aurelien.bras.gmail.com
 
 And then reload gnome-shell with `alt-F2 r`
 
-Then go to extensions preferences via gnome-tweaks, and parameter your credential with the gear button. You need to enter your login/password Netatmo account and your station device_id (mac address).
+Then go to extensions preferences via gnome-tweaks, and parameter your credential with the gear button. You need to enter your login/password Netatmo account.
 
 Now reload a last time gnome-shell, and you should have external temperature displayed at top right.
 
 ## Usage
 
-Temperature is refreshed every 5 minutes, you can click on temperature to perform a demand refresh.
+Data is refreshed every 5 minutes. You can choose in preference which data you want to display in the menu bar, for now only 3 data (temp outdoor/indoor and co2), later more to come.
 
-Note that Netatmo station send data every 10 minutes only so it's useless to refresh more often.
-
+You can click to have a small dashboard with netatmo data, will be improved in net version.
