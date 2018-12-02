@@ -17,7 +17,7 @@ git clone https://github.com/profy12/gnome-shell-netatmo-station.git
 mv gnome-shell-netatmo-station netatmo-station@aurelien.bras.gmail.com
 ```
 
-And then reload gnome-shell with `alt-F2 r`
+And then reload gnome-shell with <kbd>Alt</kbd>+<kbd>F2</kbd> <kbd>r</kbd> <kbd>Enter</kbd>
 
 Then go to extensions preferences via gnome-tweaks, and parameter your credential with the gear button. You need to enter your login/password Netatmo account.
 
