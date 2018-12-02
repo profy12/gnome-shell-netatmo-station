@@ -11,7 +11,7 @@ Should work with Gnome-shell 3.26 and later, tested with 3.28. Works too with Wa
 
 ### From gnome-shell-extension
 
-Install from [GNOME Shell extension website](https://extensions.gnome.org/extension/1512/netatmo-station/), don't forget the parameter the extension with your Netatmo credentials (the gear button).
+Install from [GNOME Shell extension website](https://extensions.gnome.org/extension/1512/netatmo-station/), don't forget to parameter the extension with your Netatmo credentials (the gear button).
 
 ### Install from source
 
