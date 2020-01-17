@@ -1,5 +1,6 @@
 const Clutter       = imports.gi.Clutter;
 const Gio           = imports.gi.Gio;
+const GObject       = imports.gi.GObject;
 const Mainloop      = imports.mainloop;
 const Meta          = imports.gi.Meta;
 const Shell         = imports.gi.Shell;
@@ -182,9 +183,10 @@ class NetatmoStationData {
 
 }
 
+let NetatmoStationMenuButton = GObject.registerClass(
 class NetatmoStationMenuButton extends PanelMenu.Button {
-    constructor() {
-        super(0.0, "Netatmo indicator");
+    _init() {
+        super._init(0.0, _("Netatmo indicator"));
         this._settings = new Convenience.NetatmoStationSettings(Me.path);
         this.naData = null;
 
@@ -278,8 +280,7 @@ class NetatmoStationMenuButton extends PanelMenu.Button {
         this.naConnect.destroy();
         this.naData.destroy();
     }
-
-};
+});
 
 let netatmoStationMenu;
 let netatmoConfig;
