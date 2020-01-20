@@ -3,9 +3,8 @@
     "description": "Extension to display data from your NetAtmo station",
     "uuid": "netatmo-station@aurelien.bras.gmail.com",
     "shell-version": [
-	    "3.26",
-	    "3.28",
-	    "3.30"
+	    "3.32",
+	    "3.34"
 	  ],
-    "version": 2
+    "version": 3
 }
