@@ -577,9 +577,6 @@ let NetatmoStationMenuButton = GObject.registerClass(
         }
         const width = max / icons.length;
 
-        log("Value: " + value);
-        log("Width: " + width);
-
         const index =
             Math.max(
                 0,
