@@ -420,6 +420,7 @@ let NetatmoStationMenuButton = GObject.registerClass(
         if (data.reachable) {
             layout.title.date.set_text(formatValue('time_utc', data.dashboard_data, prefs));
             layout.title.icon.icon_name = this.getBatteryIconName(data);
+            layout.title.rfIcon.icon_name = this.getRfIconName(data);
 
             const mLayout = layout.measures;
             for (const measureType of data.data_type) {
@@ -472,6 +473,7 @@ let NetatmoStationMenuButton = GObject.registerClass(
         } else {
             layout.title.date.set_text('n/a');
             layout.title.icon.icon_name = 'battery-missing-symbolic';
+            layout.title.rfIcon.icon_name = this.getRfIconName(data);
         }
     }
 
@@ -495,6 +497,11 @@ let NetatmoStationMenuButton = GObject.registerClass(
                     icon_name: 'battery-missing-symbolic',
                     style_class: 'popup-netatmo-title-icon',
                     icon_size: '16'
+                }),
+                rfIcon: new St.Icon({
+                    icon_name: 'network-cellular-signal-none-symbolic',
+                    style_class: 'popup-netatmo-title-icon',
+                    icon_size: '16'
                 })
             },
             measures: {
@@ -505,11 +512,83 @@ let NetatmoStationMenuButton = GObject.registerClass(
         if (type === 'module') {
             layout.title.box.add(layout.title.date);
             layout.title.box.add(layout.title.icon);
+            layout.title.box.add(layout.title.rfIcon);
         }
         layout.menuItem.add(layout.title.box);
         this.menu.addMenuItem(layout.menuItem);
 
         return layout;
+    }
+
+    getRfIconName(data) {
+        let icons;
+        let value;
+        let min;
+        let max;
+
+        if (data.type === 'NAMain') {
+            //Main Station shows wifi status
+            value = data.wifi_status;
+            /*
+             * "wifi_status": {
+             *   "type": "number",
+             *   "example": 55,
+             *   "description": "wifi status per Base station. (86=bad, 56=good)"
+             }*/
+
+            min = 56; // good
+            max = 86; // bad
+            icons = [
+                'network-wireless-signal-excellent-symbolic',
+                'network-wireless-signal-good-symbolic',
+                'network-wireless-signal-ok-symbolic',
+                'network-wireless-signal-weak-symbolic',
+                'network-wireless-signal-none-symbolic'
+            ];
+        } else {
+            // Modules shoes radio status
+            /*
+             "rf_status": {
+             "  type": "number",
+             "  example": 31,
+             "  description": "Current radio status per module. (90=low, 60=highest)"
+             },
+             */
+            value = data.rf_status;
+            min = 60; // highest
+            max = 90; // low
+
+            icons = [
+                'network-cellular-signal-excellent-symbolic',
+                'network-cellular-signal-good-symbolic',
+                'network-cellular-signal-ok-symbolic',
+                'network-cellular-signal-weak-symbolic',
+                'network-cellular-signal-none-symbolic'
+            ];
+        }
+
+        max -= min;
+        value -= min;
+        value += 3; // arbitrary delta
+
+        min = 0;
+        if (!data.reachable) {
+            value = max;
+        }
+        const width = max / icons.length;
+
+        log("Value: " + value);
+        log("Width: " + width);
+
+        const index =
+            Math.max(
+                0,
+                Math.min(
+                    icons.length - 1,
+                    Math.floor(value / width)
+                    )
+                );
+        return icons[index ];
     }
 
     getBatteryIconName(data) {
