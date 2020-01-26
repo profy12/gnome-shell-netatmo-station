@@ -1,31 +1,43 @@
 
-.helloworld-label {
-    font-size: 36px;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: rgba(10,10,10,0.7);
-    border-radius: 5px;
-    padding: .5em;
-}
 .panel-menu-data {
     padding: 5px;
     y_expand: true;
     y_align: center;
 }
-.popup-menu-title {
-    padding: 6px;
-    font-size: 20px;
+
+
+.popup-netatmo-device {
+    font-size: 16px;
     font-weight: bold;
-    text-align: left;
-    color: white;
-}
-.time-popup-title {
-    padding: 6px;
-    font-size: 15px;
-    text-align: right;
+    border-bottom: 1px solid hotpink;
 }
 
-.popup-netatmo-menu-item {
-    text-align: right;
-    color: green;
+.popup-netatmo-module {
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 5px;
+    border-top: 1px solid lightgray;
+}
+.popup-netatmo-item {
+    font-size: 13px;
+    padding-left: 15px;
+}
+.popup-netatmo-subitem {
+    font-size: 12px;
+    padding-left: 25px;
+}
+
+.popup-netatmo-title-date {
+}
+
+.popup-netatmo-title-date {
+    padding-left: 1em;
+    padding-top: 1px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.popup-netatmo-title-icon {
+    padding-left: 1em;
+    /*text-align: right;*/
 }
