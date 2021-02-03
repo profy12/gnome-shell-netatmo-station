@@ -13,7 +13,7 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const CheckBox = imports.ui.checkBox.CheckBox;
-const Tweener = imports.ui.tweener;
+const Tweener = imports.tweener.tweener;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
@@ -224,25 +224,31 @@ function getRelatedMeasures(type) {
     switch (type) {
         case 'Temperature':
             return [
-                {name: 'Temperature', label: 'Temperature: ', extra: 'temp_trend'},
-                {name: 'max_temp', label: '↥ ', extra: 'date_max_temp'},
-                {name: 'min_temp', label: '↧ ', extra: 'date_min_temp'}
+                {name: 'Temperature', label: 'Temperature: ', extra: [
+                    {name: 'temp_trend', label : ' '},
+                    {name: 'max_temp', label: '⭱ '},
+                    {name: 'min_temp', label: '⭳ '}
+                ]},
+                //{name: 'max_temp', label: '↥ ', extra: 'date_max_temp'},
+                //{name: 'min_temp', label: '↧ ', extra: 'date_min_temp'}
             ];
         case 'Pressure':
             return [
-                {name: 'Pressure', label: 'Pressure: ', extra: 'pressure_trend'},
-                {name: 'AbsolutePressure', label: 'abs: '}
+                {name: 'Pressure', label: 'Pressure: ', extra: [{name: 'pressure_trend'}]},
+                //{name: 'AbsolutePressure', label: 'abs: '}
             ];
         case 'Rain':
             return [
-                {name: 'Raine', label: 'Rain: '},
-                {name: 'sum_rain_1', label: 'last hour/day: ', extra: 'sum_rain_24'}
+                {name: 'Rain', label: 'Rain: ', extra: [
+                    {name: 'sum_rain_1', label: 'last hour/day: '}, 
+                    {name: 'sum_rain_24'}]
+                }
             ];
         case 'Wind':
             return [
-                {name: 'WindStrength', label: 'Wind: ', extra: 'WindAngle'},
-                {name: 'max_wind_str', label: 'max: ', extra: 'max_wind_angle'},
-                {name: 'GustStrength', label: 'Gust: ', extra: 'GustAngle'}
+                {name: 'WindStrength', label: 'Wind: ', extra: [{name: 'WindAngle'}]},
+                {name: 'max_wind_str', label: 'max: ', extra: [{name: 'max_wind_angle'}]},
+                {name: 'GustStrength', label: 'Gust: ', extra: [{name: 'GustAngle'}]}
             ];
         default:
             return [{name: type, label: type + ': '}];
@@ -328,7 +334,7 @@ function formatVal(type, value, userPrefs) {
             case 4:
                 return value + ' knot';
             default:
-                return calue + ' [?]';
+                return value + ' [?]';
 
         }
         case 'WindAngle':
@@ -339,7 +345,8 @@ function formatVal(type, value, userPrefs) {
                 'E', 'ESE', 'SE', 'SSE',
                 'S', 'SSW', 'SW', 'WSW',
                 'W', 'WNW', 'NW', 'NNW',
-                'N'][
+                'N'
+            ][
                 Math.round(value / 22.5)
             ];
     }
@@ -439,8 +446,10 @@ let NetatmoStationMenuButton = GObject.registerClass(
                     // Build text to display := label + measure value + extra 
                     const text = (relatedMeasure.label || type)
                         + formatValue(type, data.dashboard_data, prefs)
-                        + (relatedMeasure.extra ? ', ' +
-                            formatValue(relatedMeasure.extra, data.dashboard_data, prefs)
+                        + (relatedMeasure.extra ? 
+                            ' (' + relatedMeasure.extra.map(extra => 
+                                (extra.label || '') + formatValue(extra.name, data.dashboard_data, prefs)
+                            ).join(", ") + ')'
                             : '');
 
                     if (mLayout[type]) {
@@ -522,6 +531,7 @@ let NetatmoStationMenuButton = GObject.registerClass(
 
     getRfIconName(data) {
         let icons;
+        let offlineIcon;
         let value;
         let min;
         let max;
@@ -542,9 +552,9 @@ let NetatmoStationMenuButton = GObject.registerClass(
                 'network-wireless-signal-excellent-symbolic',
                 'network-wireless-signal-good-symbolic',
                 'network-wireless-signal-ok-symbolic',
-                'network-wireless-signal-weak-symbolic',
-                'network-wireless-signal-none-symbolic'
+                'network-wireless-signal-weak-symbolic'
             ];
+            offlineIcon = 'network-wireless-signal-none-symbolic';
         } else {
             // Modules shoes radio status
             /*
@@ -562,9 +572,9 @@ let NetatmoStationMenuButton = GObject.registerClass(
                 'network-cellular-signal-excellent-symbolic',
                 'network-cellular-signal-good-symbolic',
                 'network-cellular-signal-ok-symbolic',
-                'network-cellular-signal-weak-symbolic',
-                'network-cellular-signal-none-symbolic'
+                'network-cellular-signal-weak-symbolic'
             ];
+            offlineIcon = 'network-cellular-signal-none-symbolic';
         }
 
         max -= min;
@@ -573,19 +583,20 @@ let NetatmoStationMenuButton = GObject.registerClass(
 
         min = 0;
         if (!data.reachable) {
-            value = max;
-        }
-        const width = max / icons.length;
+            return offlineIcon;
+        } else {
+            const width = max / icons.length;
 
-        const index =
-            Math.max(
-                0,
-                Math.min(
-                    icons.length - 1,
-                    Math.floor(value / width)
-                    )
-                );
-        return icons[index ];
+            const index =
+                Math.max(
+                    0,
+                    Math.min(
+                        icons.length - 1,
+                        Math.floor(value / width)
+                        )
+                    );
+            return icons[index ];
+        }
     }
 
     getBatteryIconName(data) {
