@@ -1,11 +1,15 @@
 const Gtk = imports.gi.Gtk;
+const GObject = imports.gi.GObject;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 
-class NetatmoStationSettingsWidget extends Gtk.Box {
-    constructor(params){
-        super(params);
+
+var NetatmoStationSettingsWidget = GObject.registerClass({
+	GtypeName: 'netatmosetting'
+}, class NetatmoStationSettingsWidget extends Gtk.Box {
+    _init(params){
+        super._init(params);
         this._settingsConnect = new Convenience.NetatmoCredentialSettings(Me.path);
         this._settingsStation = new Convenience.NetatmoStationSettings(Me.path);
         let uiFilePath = Me.path + "/preferences.glade";
@@ -38,6 +42,7 @@ class NetatmoStationSettingsWidget extends Gtk.Box {
         }
     }
 }
+);
 
 function init(){
     log('Load Netatmo preference');

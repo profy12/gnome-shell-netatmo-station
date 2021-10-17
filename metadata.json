@@ -4,7 +4,8 @@
     "uuid": "netatmo-station@aurelien.bras.gmail.com",
     "shell-version": [
 	    "3.32",
-	    "3.34"
+	    "3.34",
+	    "3.36"
 	  ],
-    "version": 3
+    "version": 4
 }
