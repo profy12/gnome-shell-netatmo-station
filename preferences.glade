@@ -1,162 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkNotebook" id="netatmo-main-settings">
-    <property name="visible">True</property>
-    <property name="can_focus">True</property>
+    <property name="focusable">1</property>
     <child>
-      <object class="GtkGrid" id="netatm-credential">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkLabel" id="netatmo-username-label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Username</property>
-            <property name="width_chars">18</property>
+      <object class="GtkNotebookPage">
+        <property name="child">
+          <object class="GtkGrid" id="netatm-credential">
+            <child>
+              <object class="GtkLabel" id="netatmo-username-label">
+                <property name="label" translatable="yes">Username</property>
+                <property name="width-chars">18</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="netatmo-username">
+                <property name="focusable">1</property>
+                <property name="input-purpose">pin</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="netatmo-password-label">
+                <property name="label" translatable="yes">Password</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="netatmo-password">
+                <property name="focusable">1</property>
+                <property name="input-purpose">password</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="netatmo-username">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="input_purpose">pin</property>
+        </property>
+        <property name="tab">
+          <object class="GtkLabel" id="netatmo-credential-label">
+            <property name="label" translatable="yes">Connexion</property>
           </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="netatmo-password-label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Password</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="netatmo-password">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="input_purpose">password</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
+        </property>
       </object>
     </child>
-    <child type="tab">
-      <object class="GtkLabel" id="netatmo-credential-label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Connexion</property>
-      </object>
-      <packing>
-        <property name="menu_label">connexion</property>
-        <property name="tab_fill">False</property>
-      </packing>
-    </child>
     <child>
-      <object class="GtkGrid" id="netatmo-display">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkLabel" id="display-temp-ext-label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Display outdoor temperature</property>
-            <property name="width_chars">38</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="display-temp-int-label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Display indoor temperature</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="display-co2-label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Display CO2</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="netatmo-display-temp-ext">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="active">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="netatmo-display-temp-int">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="netatmo-display-co2">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">2</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
+      <object class="GtkNotebookPage">
         <property name="position">1</property>
-      </packing>
-    </child>
-    <child type="tab">
-      <object class="GtkLabel" id="netatmo-display-label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Display</property>
+        <property name="child">
+          <object class="GtkGrid" id="netatmo-display">
+            <child>
+              <object class="GtkLabel" id="display-temp-ext-label">
+                <property name="label" translatable="yes">Display outdoor temperature</property>
+                <property name="width-chars">38</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="display-temp-int-label">
+                <property name="label" translatable="yes">Display indoor temperature</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="display-co2-label">
+                <property name="label" translatable="yes">Display CO2</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">2</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="netatmo-display-temp-ext">
+                <property name="focusable">1</property>
+                <property name="active">1</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">0</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="netatmo-display-temp-int">
+                <property name="focusable">1</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="netatmo-display-co2">
+                <property name="focusable">1</property>
+                <layout>
+                  <property name="column">1</property>
+                  <property name="row">2</property>
+                </layout>
+              </object>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+        </property>
+        <property name="tab">
+          <object class="GtkLabel" id="netatmo-display-label">
+            <property name="label" translatable="yes">Display</property>
+          </object>
+        </property>
       </object>
-      <packing>
-        <property name="menu_label">display</property>
-        <property name="position">1</property>
-        <property name="tab_fill">False</property>
-      </packing>
     </child>
     <child>
-      <placeholder/>
-    </child>
-    <child type="tab">
       <placeholder/>
     </child>
   </object>

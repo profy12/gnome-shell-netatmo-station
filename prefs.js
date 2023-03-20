@@ -20,7 +20,7 @@ var NetatmoStationSettingsWidget = GObject.registerClass({
                 label: 'Could not load the preferences UI file',
                 vexpand: true
             });
-            this.pack_start(label, true, true, 0);
+            this.prepend(label, true, true, 0);
         } else {
             let mainWindows = builder.get_object('netatmo-main-settings');
             let netatmoUsername = builder.get_object('netatmo-username');
@@ -38,7 +38,7 @@ var NetatmoStationSettingsWidget = GObject.registerClass({
             netatmoDisplayTempExt.connect('state-set',()=>{this._settingsStation.displayTempExt = netatmoDisplayTempExt.active});
             netatmoDisplayTempInt.connect('state-set',()=>{this._settingsStation.displayTempInt = netatmoDisplayTempInt.active});
             netatmoDisplayCO2.connect('state-set',()=>{this._settingsStation.displayCO2 = netatmoDisplayCO2.active});
-            this.pack_start(mainWindows, true, true, 0);
+            this.prepend(mainWindows, true, true, 0);
         }
     }
 }
@@ -50,6 +50,6 @@ function init(){
 
 function buildPrefsWidget () {
     let widget = new NetatmoStationSettingsWidget();
-    widget.show_all();
+    //widget.show_all();
     return widget;
 }
